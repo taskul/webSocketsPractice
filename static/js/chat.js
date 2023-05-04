@@ -11,17 +11,17 @@ const name = prompt("Username?");
 
 /** called when connection opens, sends join info to server. */
 
-ws.onopen = function(evt) {
+ws.onopen = function (evt) {
   console.log("open", evt);
 
-  let data = {type: "join", name: name};
+  let data = { type: "join", name: name };
   ws.send(JSON.stringify(data));
 };
 
 
 /** called when msg received from server; displays it. */
 
-ws.onmessage = function(evt) {
+ws.onmessage = function (evt) {
   console.log("message", evt);
 
   let msg = JSON.parse(evt.data);
@@ -61,14 +61,23 @@ ws.onclose = function (evt) {
 
 $('form').submit(function (evt) {
   evt.preventDefault();
+  const inputValue = $('#m').val();
+  const userEvents = {
+    "/joke": { type: "joke" },
+    "/members": data = { type: "members" },
+  }
   let data;
-  // tastan added this
-  if ($('#m').val() === '/joke') {
-     data = {type: "joke"}
-  } else if ($('#m').val() === '/members') {
-      data = {type:"members"}
+
+  if (inputValue === '/joke') {
+    data = { type: "joke" }
+  } else if (inputValue === '/members') {
+    data = { type: "members" }
+  } else if (inputValue.startsWith('/priv')) {
+    const valueArr = inputValue.split(' ');
+    const message = valueArr.splice(2)
+    data = { type: 'priv', reciever: valueArr[1], text: message }
   } else {
-    data = {type: "chat", text: $("#m").val()};
+    data = { type: "chat", text: $("#m").val() };
   }
   ws.send(JSON.stringify(data));
 

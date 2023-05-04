@@ -56,17 +56,16 @@ class Room {
     }
   }
 
-  // Tastan added function
-  messageUser(member, data) {
-    member.send(JSON.stringify(data))
-  }
-
-  showMembers(member) {
-    const memberNames = [];
-    this.members.forEach(m => memberNames.push(m.name));
-    const data = {type: "chat", text: `Chat members are: ${memberNames}`, name: "Server"};
+  // Display output of the predefined commands entered by user
+  displayCommands(member, data) {
     member.send(JSON.stringify(data));
   }
+
+  sendPrivateMessage(sender, reciever, data) {
+    sender.send(JSON.stringify(data));
+    reciever.send(JSON.stringify(data));
+  }
+
 }
 
 module.exports = Room;
